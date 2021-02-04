@@ -1,0 +1,40 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Movement : MonoBehaviour
+{
+    public float speedX = 5.0f;
+    public float speedY = 0.0f;
+    private float inputX = 0;
+
+    public int jumpForce = 3;
+    public bool onTheFloor = false;
+    public Transform foot;
+    public float footRadious = 1.0f;
+    public LayerMask floor;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        inputX = Input.GetAxisRaw("Horizontal");
+        speedY = gameObject.GetComponent<Rigidbody2D>().velocity.y;
+        gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(inputX * speedX, speedY);
+
+        onTheFloor = Physics2D.OverlapCircle(foot.position, footRadious, floor);
+        if ((Input.GetKeyDown(KeyCode.Space)) && (onTheFloor))
+        {
+
+            gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
+
+
+    }
+}
